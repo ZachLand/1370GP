@@ -10,7 +10,7 @@ void test2(double);
 
 int main ()
 {
-    // This is the main code
+    // This is the main code /
     return 0;
 }
 
