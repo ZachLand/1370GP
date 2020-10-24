@@ -5,7 +5,7 @@
 using namespace std;
 
 // Prototypes
-int test1(int);
+double getValue();
 void test2(double);
 
 int main ()
@@ -14,8 +14,15 @@ int main ()
     return 0;
 }
 
-int test1(int a)
+double getValue()
 {
+    static double a;
+    do
+    {
+        cin >> a;
+        if(a<0)
+            cout << "Error: Invalid value" << endl;
+    } while(a<0);
     return a;
 }
 
