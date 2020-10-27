@@ -8,7 +8,7 @@ using namespace std;
 // Prototypes
 double getValue();
 int getTime(int&, int&, string&);
-void printResults(int, int, string, int, int, string);
+void printResults(int, int, string, int, int, string, double, double, int);
 
 int main () /* These will more than likely be broken up into other Functions
                 I've placed them in int main just so we could start building*/
@@ -28,27 +28,37 @@ int main () /* These will more than likely be broken up into other Functions
 
     // The amount of any round -trip airfare
     double airfare;
+    cout << "airfare: ";
+    airfare = getValue();
 
     // The amount of any car rentals
     double carRental;
+    cout << "carRental: ";
+    carRental = getValue();
 
     /* Miles driven, if a private vehicle was used. Vehicle allowance 
         is $0.58 per mile.*/
     int milesDriven;
     const double ALLOWANCE_VEHICLE = 0.58;
+    cout << "milesDriven: ";
+    milesDriven = getValue();
+
 
     /* Parking fees. (The company allows up to $12 per day. Anything
         in excess of this must be paid by the employee.)*/
     double feeParking;
     const double ALLOWANCE_PARKING = 12.00;
+    cout << "feeParking: ";
 
     /* Taxi fees. (The company allows up to $40 per day for each day
         a taxi was used. Anything in excess of this must be paid by the employee.)*/
     double feeTaxi;
     const double ALLOWANCE_TAXI = 40.00;
+    cout << "feeTaxi: ";
 
     // Conference or seminar registration fees
     double feeConf;
+    cout << "feeConf: ";
 
     /* Hotel expenses. (The company allows up to $90 per night for
         lodging. Anything in excess of this amount must be paid by the employee.)*/
@@ -70,7 +80,7 @@ int main () /* These will more than likely be broken up into other Functions
     double breakfast, lunch, dinner;
     const double BREAKFAST = 18.00, LUNCH = 12.00, DINNER = 20.00;
 
-    printResults(timeOfDepartureHr, timeOfDepartureMin, am_pm_depart, timeOfArrivalHr, timeOfArrivalMin, am_pm_depart);
+    printResults(timeOfDepartureHr, timeOfDepartureMin, am_pm_depart, timeOfArrivalHr, timeOfArrivalMin, am_pm_depart, airfare, carRental, milesDriven);
 
     return 0;
 }
@@ -91,7 +101,7 @@ double getValue()
 
 int getTime(int& a, int& b, string& d)
 {
-    char c; /* We can use time as integers having them separated
+    static char c; /* We can use time as integers having them separated
                     with ':' */
     cin >> a >> c >> b >> d;
     while(!((a>0 && a<=12) && (b>0 && b<=59) && (d=="AM"||d=="am"||d=="PM"||d=="pm")))
@@ -115,7 +125,7 @@ int getTime(int& a, int& b, string& d)
     and total amount allowed for the entire trip. This report should be
     written to a file.
 */
-void printResults(int DeHr, int DeMin, string DAmPm, int ArHr, int ArMin, string ArAmPm)
+void printResults(int DeHr, int DeMin, string DAmPm, int ArHr, int ArMin, string ArAmPm, double q, double w, int z)
 {
     // This is how we will output for time.
     cout << setw(2) << setfill('0') << DeHr 
@@ -124,4 +134,7 @@ void printResults(int DeHr, int DeMin, string DAmPm, int ArHr, int ArMin, string
     cout << setw(2) << setfill('0') << ArHr << ':' 
             << setw(2) << setfill('0') << ArMin << ' '
             << ArAmPm << endl;
+    cout << "airfair = $" << q << endl;
+    cout << "carRental = $" << w << endl;
+    cout << "milesDriven = " << z << endl;
 }
