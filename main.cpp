@@ -8,7 +8,8 @@ using namespace std;
 // Prototypes
 double getValue();
 int getTime(int&, int&, string&);
-void printResults(int, int, string, int, int, string, double, double, int);
+void printResults(int, int, string, int, int, string, double, double, int, 
+        double, double, double, double);
 
 int main () /* These will more than likely be broken up into other Functions
                 I've placed them in int main just so we could start building*/
@@ -28,16 +29,19 @@ int main () /* These will more than likely be broken up into other Functions
 
     // The amount of any round -trip airfare
     double airfare;
-    cout << "airfare: ";
-    airfare = getValue();
+    cout << "airfare: $";
+    airfare = 123.456; //getValue();
 
     // The amount of any car rentals
     double carRental;
-    cout << "carRental: ";
-    carRental = getValue();
+    cout << "carRental: $";
+    carRental = 234.567; //getValue();
 
     /* Miles driven, if a private vehicle was used. Vehicle allowance 
-        is $0.58 per mile.*/
+        is $0.58 per mile. Question will be: Do we want the miles to
+        be an integer or floating point? AND if floating point,
+        should be have this number round up so that they are charged
+        for the mile as a whole? I know companies do this a lot.*/
     int milesDriven;
     const double ALLOWANCE_VEHICLE = 0.58;
     cout << "milesDriven: ";
@@ -48,22 +52,27 @@ int main () /* These will more than likely be broken up into other Functions
         in excess of this must be paid by the employee.)*/
     double feeParking;
     const double ALLOWANCE_PARKING = 12.00;
-    cout << "feeParking: ";
+    cout << "feeParking: $";
+    feeParking = getValue();
 
     /* Taxi fees. (The company allows up to $40 per day for each day
         a taxi was used. Anything in excess of this must be paid by the employee.)*/
     double feeTaxi;
     const double ALLOWANCE_TAXI = 40.00;
-    cout << "feeTaxi: ";
+    cout << "feeTaxi: $";
+    feeTaxi = 135.246; //getValue();
 
     // Conference or seminar registration fees
     double feeConf;
-    cout << "feeConf: ";
+    cout << "feeConf: $";
+    feeConf = 246.357; //getValue();
 
     /* Hotel expenses. (The company allows up to $90 per night for
         lodging. Anything in excess of this amount must be paid by the employee.)*/
     double hotel;
     const double ALLOWANCE_HOTEL = 90.00;
+    cout << "hotel: $";
+    hotel = 357.468; //getValue();
 
     /* The cost of each meal eaten. On the first day of the trip,
         breakfast is allowed as an expense if the time of departure
@@ -79,8 +88,11 @@ int main () /* These will more than likely be broken up into other Functions
     bool before7AM, before12PM, before6PM, before8AM, before1pm, before7pm;
     double breakfast, lunch, dinner;
     const double BREAKFAST = 18.00, LUNCH = 12.00, DINNER = 20.00;
+    
 
-    printResults(timeOfDepartureHr, timeOfDepartureMin, am_pm_depart, timeOfArrivalHr, timeOfArrivalMin, am_pm_depart, airfare, carRental, milesDriven);
+    printResults(timeOfDepartureHr, timeOfDepartureMin, am_pm_depart, timeOfArrivalHr, 
+        timeOfArrivalMin, am_pm_depart, airfare, carRental, milesDriven, feeParking, 
+        feeTaxi, feeConf, hotel);
 
     return 0;
 }
@@ -90,12 +102,14 @@ double getValue()
     /* I think we will need to change this since we will be dealing
         int and doubles throughout the program.*/
     static double a;
-    do
+    cin >> a;
+    while(a<0 || cin.fail())
     {
+        cout << "Error: Invalid value" << endl;
+        cin.clear();
+        cin.ignore(numeric_limits<streamsize>::max(), '\n');
         cin >> a;
-        if(a<0)
-            cout << "Error: Invalid value" << endl;
-    } while(a<0);
+    }
     return a;
 }
 
@@ -125,16 +139,25 @@ int getTime(int& a, int& b, string& d)
     and total amount allowed for the entire trip. This report should be
     written to a file.
 */
-void printResults(int DeHr, int DeMin, string DAmPm, int ArHr, int ArMin, string ArAmPm, double q, double w, int z)
+void printResults(int DeHr, int DeMin, string DAmPm, int ArHr, int ArMin, 
+        string ArAmPm, double q, double w, int z, double fp, double ft, 
+        double fc, double h)
 {
-    // This is how we will output for time.
+    /* This is how we will output for time. And for the time being, will
+        be a test for our outputs while troubleshooting.*/ 
+    cout << endl;
     cout << setw(2) << setfill('0') << DeHr 
             << ':' << setw(2) << setfill('0') << DeMin
             << ' ' << DAmPm << endl;
     cout << setw(2) << setfill('0') << ArHr << ':' 
             << setw(2) << setfill('0') << ArMin << ' '
             << ArAmPm << endl;
+    cout << fixed << showpoint << setprecision(2);
     cout << "airfair = $" << q << endl;
     cout << "carRental = $" << w << endl;
     cout << "milesDriven = " << z << endl;
+    cout << "feeParking = $" << fp << endl;
+    cout << "feeTaxi = $" << ft << endl;
+    cout << "feeConf = $" << fc << endl;
+    cout << "hotel: $" << h << endl;
 }
