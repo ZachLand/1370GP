@@ -30,12 +30,12 @@ int main () /* These will more than likely be broken up into other Functions
     // The amount of any round -trip airfare
     double airfare;
     cout << "airfare: $";
-    airfare = 123.456; //getValue();
+    airfare = getValue();
 
     // The amount of any car rentals
     double carRental;
     cout << "carRental: $";
-    carRental = 234.567; //getValue();
+    carRental = getValue();
 
     /* Miles driven, if a private vehicle was used. Vehicle allowance 
         is $0.58 per mile. Question will be: Do we want the miles to
@@ -60,19 +60,19 @@ int main () /* These will more than likely be broken up into other Functions
     double feeTaxi;
     const double ALLOWANCE_TAXI = 40.00;
     cout << "feeTaxi: $";
-    feeTaxi = 135.246; //getValue();
+    feeTaxi = getValue();
 
     // Conference or seminar registration fees
     double feeConf;
     cout << "feeConf: $";
-    feeConf = 246.357; //getValue();
+    feeConf = getValue();
 
     /* Hotel expenses. (The company allows up to $90 per night for
         lodging. Anything in excess of this amount must be paid by the employee.)*/
     double hotel;
     const double ALLOWANCE_HOTEL = 90.00;
     cout << "hotel: $";
-    hotel = 357.468; //getValue();
+    hotel = getValue();
 
     /* The cost of each meal eaten. On the first day of the trip,
         breakfast is allowed as an expense if the time of departure
