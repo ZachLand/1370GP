@@ -8,7 +8,7 @@ using namespace std;
 // Prototypes
 double getValue();
 int getTime(int&, int&, string&);
-void printResults(int, int, string, int, int, string, double, double, int, 
+void printResults(int, int, int, string, int, int, string, double, double, int, 
         double, double, double, double);
 
 int main () /* These will more than likely be broken up into other Functions
@@ -16,6 +16,8 @@ int main () /* These will more than likely be broken up into other Functions
 {
     // The total number of days spent on the trip
     int days;
+    cout << "days: ";
+    days = getValue();
 
     /* The time of departure on the first day of the trip and 
         the time of arrival back home on the last day of the trip */
@@ -90,9 +92,9 @@ int main () /* These will more than likely be broken up into other Functions
     const double BREAKFAST = 18.00, LUNCH = 12.00, DINNER = 20.00;
     
 
-    printResults(timeOfDepartureHr, timeOfDepartureMin, am_pm_depart, timeOfArrivalHr, 
-        timeOfArrivalMin, am_pm_depart, airfare, carRental, milesDriven, feeParking, 
-        feeTaxi, feeConf, hotel);
+    printResults(days, timeOfDepartureHr, timeOfDepartureMin, am_pm_depart, 
+        timeOfArrivalHr, timeOfArrivalMin, am_pm_depart, airfare, 
+        carRental, milesDriven, feeParking, feeTaxi, feeConf, hotel);
 
     return 0;
 }
@@ -118,14 +120,14 @@ int getTime(int& a, int& b, string& d)
     static char c; /* We can use time as integers having them separated
                     with ':' */
     cin >> a >> c >> b >> d;
-    while(!((a>0 && a<=12) && (b>0 && b<=59) && (d=="AM"||d=="am"||d=="PM"||d=="pm")))
+    while(!((a>0 && a<=12) && (b>0 && b<=59) && 
+        (d=="AM"||d=="am"||d=="PM"||d=="pm")))
     {
         cout << "Please enter a valid time" << endl;
         cin.clear();
         cin.ignore(numeric_limits<streamsize>::max(), '\n');
         cin >> a >> c >> b >> d;
     } ;
-
     return 0;
 }
 
@@ -139,13 +141,14 @@ int getTime(int& a, int& b, string& d)
     and total amount allowed for the entire trip. This report should be
     written to a file.
 */
-void printResults(int DeHr, int DeMin, string DAmPm, int ArHr, int ArMin, 
+void printResults(int days, int DeHr, int DeMin, string DAmPm, int ArHr, int ArMin, 
         string ArAmPm, double q, double w, int z, double fp, double ft, 
         double fc, double h)
 {
     /* This is how we will output for time. And for the time being, will
         be a test for our outputs while troubleshooting.*/ 
     cout << endl;
+    cout << "days: " << days << endl;
     cout << setw(2) << setfill('0') << DeHr 
             << ':' << setw(2) << setfill('0') << DeMin
             << ' ' << DAmPm << endl;
