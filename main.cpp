@@ -139,7 +139,7 @@ int getTime(int& a, int& b, string& d)
     formatted expense report that includes the amount spent and the
     amount allowed in each category, as well as the total amount spent,
     and total amount allowed for the entire trip. This report should be
-    written to a file.
+    written to a file. 
 */
 void printResults(int days, int DeHr, int DeMin, string DAmPm, int ArHr, int ArMin, 
         string ArAmPm, double q, double w, int z, double fp, double ft, 
