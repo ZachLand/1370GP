@@ -7,6 +7,7 @@ using namespace std;
 
 // Prototypes
 double getValue();
+int getTime(int&, int&, string&);
 void printResults(double);
 
 int main () /* These will more than likely be broken up into other Functions
@@ -18,13 +19,20 @@ int main () /* These will more than likely be broken up into other Functions
     /* The time of departure on the first day of the trip and 
         the time of arrival back home on the last day of the trip */
     int timeOfDepartureHr, timeOfDepartureMin, timeOfArrivalHr, timeOfArrivalMin;
-    char c; /* We can use time as integers having them separated
-                    with ':' */
-    cout << "Please enter your destination travel start time (HH:MM): ";
-    cin >> timeOfDepartureHr >> c >> timeOfDepartureMin;
-    cin.clear();
-    cin.ignore(numeric_limits<streamsize>::max(), '\n');
+    string am_pm_depart, am_pm_arrive;
 
+    cout << "Please enter your departure time (HH:MM AM/PM): ";
+    getTime(timeOfDepartureHr, timeOfDepartureMin, am_pm_depart);
+    cout << "Please enter your arrival time (HH:MM AM/PM): ";
+    getTime(timeOfArrivalHr, timeOfArrivalMin, am_pm_arrive);
+
+    // This is how we will output for time.
+    cout << setw(2) << setfill('0') << timeOfDepartureHr 
+            << ':' << setw(2) << setfill('0') << timeOfDepartureMin
+            << ' ' << am_pm_depart << endl;
+    cout << setw(2) << setfill('0') << timeOfArrivalHr << ':' 
+            << setw(2) << setfill('0') << timeOfArrivalMin << ' '
+            << am_pm_arrive << endl;
     // The amount of any round -trip airfare
     double airfare;
 
@@ -87,6 +95,22 @@ double getValue()
     return a;
 }
 
+int getTime(int& a, int& b, string& d)
+{
+    char c; /* We can use time as integers having them separated
+                    with ':' */
+    cin >> a >> c >> b >> d;
+    while(!((a>0 && a<=12) && (b>0 && b<=59) && (d=="AM"||d=="am"||d=="PM"||d=="pm")))
+    {
+        cout << "Please enter a valid time" << endl;
+        cin.clear();
+        cin.ignore(numeric_limits<streamsize>::max(), '\n');
+        cin >> a >> c >> b >> d;
+    } ;
+
+    return 0;
+}
+
 
 /* The program should perform the necessary calculations to determine
     the total amount spent by the business traveler in each category
@@ -101,4 +125,3 @@ void printResults(double a)
 {
     cout << a << endl; // Placeholder
 }
-// Testing with my macbook
