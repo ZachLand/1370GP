@@ -14,7 +14,7 @@ void printResults(int, int, int, string, int, int, string, double, double, int,
 int main () /* These will more than likely be broken up into other Functions
                 I've placed them in int main just so we could start building*/
 {
-    // The total number of days spent on the trip
+    // The total number of days spent on the trip.
     int days;
     cout << "days: ";
     days = getValue();
