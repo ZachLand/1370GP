@@ -8,7 +8,7 @@ using namespace std;
 // Prototypes
 double getValue();
 int getTime(int&, int&, string&);
-void printResults(double);
+void printResults(int, int, string, int, int, string);
 
 int main () /* These will more than likely be broken up into other Functions
                 I've placed them in int main just so we could start building*/
@@ -26,13 +26,6 @@ int main () /* These will more than likely be broken up into other Functions
     cout << "Please enter your arrival time (HH:MM AM/PM): ";
     getTime(timeOfArrivalHr, timeOfArrivalMin, am_pm_arrive);
 
-    // This is how we will output for time.
-    cout << setw(2) << setfill('0') << timeOfDepartureHr 
-            << ':' << setw(2) << setfill('0') << timeOfDepartureMin
-            << ' ' << am_pm_depart << endl;
-    cout << setw(2) << setfill('0') << timeOfArrivalHr << ':' 
-            << setw(2) << setfill('0') << timeOfArrivalMin << ' '
-            << am_pm_arrive << endl;
     // The amount of any round -trip airfare
     double airfare;
 
@@ -77,7 +70,8 @@ int main () /* These will more than likely be broken up into other Functions
     double breakfast, lunch, dinner;
     const double BREAKFAST = 18.00, LUNCH = 12.00, DINNER = 20.00;
 
-    
+    printResults(timeOfDepartureHr, timeOfDepartureMin, am_pm_depart, timeOfArrivalHr, timeOfArrivalMin, am_pm_depart);
+
     return 0;
 }
 
@@ -121,7 +115,13 @@ int getTime(int& a, int& b, string& d)
     and total amount allowed for the entire trip. This report should be
     written to a file.
 */
-void printResults(double a)
+void printResults(int DeHr, int DeMin, string DAmPm, int ArHr, int ArMin, string ArAmPm)
 {
-    cout << a << endl; // Placeholder
+    // This is how we will output for time.
+    cout << setw(2) << setfill('0') << DeHr 
+            << ':' << setw(2) << setfill('0') << DeMin
+            << ' ' << DAmPm << endl;
+    cout << setw(2) << setfill('0') << ArHr << ':' 
+            << setw(2) << setfill('0') << ArMin << ' '
+            << ArAmPm << endl;
 }
