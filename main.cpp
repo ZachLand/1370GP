@@ -8,7 +8,7 @@ using namespace std;
 
 // Prototypes
 double getValue();
-double milesDriven();
+void milesDrivenCalc(const double&, int&, double&);
 void getParkingFee(double&);
 int getTime(int&, int&, string&);
 void printResults(int, int, int, string, int, int, string, double, double, int, 
@@ -47,10 +47,12 @@ int main () /* These will more than likely be broken up into other Functions
         be an integer or floating point? AND if floating point,
         should be have this number round up so that they are charged
         for the mile as a whole? I know companies do this a lot.*/
+    double allowanceVeh;
     int milesDriven;
     const double ALLOWANCE_VEHICLE = 0.58;
-    cout << "milesDriven: ";
+    cout << "miles driven: ";
     milesDriven = getValue();
+    milesDrivenCalc(ALLOWANCE_VEHICLE, milesDriven, allowanceVeh);
 
 
     /* Parking fees. (The company allows up to $12 per day. Anything
@@ -169,14 +171,19 @@ void printResults(int days, int DeHr, int DeMin, string DAmPm, int ArHr, int ArM
     cout << "hotel: $" << h << endl;
 }
 /******************************************************************************************/
-double milesDriven()
+void milesDrivenCalc(const double& ALLOWANCE_VEHICLE, int& milesDriven, double& allowanceVeh)
 {
-    string choice;
+    int choice;
     
-    cout << "Was a private vehicle used? ";
+    cout << "Was a private vehicle used? " << endl;
+    cout << "1. Yes" << endl;
+    cout << "2. No" << endl;
     cin >> choice;
-}
 
+    if(choice = 1)
+    allowanceVeh = milesDriven * ALLOWANCE_VEHICLE;
+}
+/******************************************************************************************/
 void getParkingFee(double& feeParking, double& feeParkingExcess, int& days)
 {
 /* Parking fees. (The company allows up to $12 per day. Anything
