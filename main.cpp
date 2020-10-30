@@ -169,7 +169,8 @@ void printResults(int days, int DeHr, int DeMin, string DAmPm, int ArHr, int ArM
 /******************************************************************************************/
 double milesDriven()
 {
-    string
+    string choice;
+    
     cout << "Was a private vehicle used? ";
     cin >> choice;
 }
