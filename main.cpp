@@ -164,3 +164,5 @@ void printResults(int days, int DeHr, int DeMin, string DAmPm, int ArHr, int ArM
     cout << "feeConf = $" << fc << endl;
     cout << "hotel: $" << h << endl;
 }
+
+//TEST LINE
