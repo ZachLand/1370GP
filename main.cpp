@@ -1,12 +1,14 @@
 #include <iostream>
 #include <iomanip>
 #include <fstream>
+#include <string>
 #include <limits>
 
 using namespace std;
 
 // Prototypes
 double getValue();
+double milesDriven();
 int getTime(int&, int&, string&);
 void printResults(int, int, int, string, int, int, string, double, double, int, 
         double, double, double, double);
@@ -98,7 +100,7 @@ int main () /* These will more than likely be broken up into other Functions
 
     return 0;
 }
-
+/******************************************************************************************/
 double getValue()
 {
     /* I think we will need to change this since we will be dealing
@@ -130,7 +132,7 @@ int getTime(int& a, int& b, string& d)
     } ;
     return 0;
 }
-
+/******************************************************************************************/
 
 /* The program should perform the necessary calculations to determine
     the total amount spent by the business traveler in each category
@@ -163,4 +165,11 @@ void printResults(int days, int DeHr, int DeMin, string DAmPm, int ArHr, int ArM
     cout << "feeTaxi = $" << ft << endl;
     cout << "feeConf = $" << fc << endl;
     cout << "hotel: $" << h << endl;
+}
+/******************************************************************************************/
+double milesDriven()
+{
+    string
+    cout << "Was a private vehicle used? ";
+    cin >> choice;
 }
