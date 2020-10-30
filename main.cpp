@@ -1,29 +1,31 @@
 #include <iostream>
 #include <iomanip>
 #include <fstream>
-#include <string>
 #include <limits>
 
 using namespace std;
 
 // Prototypes
 double getValue();
-void milesDrivenCalc(const double&, int&, double&);
-void getParkingFee(double&, double&, int);
 int getTime(int&, int&, string&);
+void milesDrivenCalc(const double&, int&, double&);
+void getFees(const double&, double&, double&, int);
 void printResults(int, int, int, string, int, int, string, double, double, int, 
         double, double, double, double, double, double);
 
-int main () /* These will more than likely be broken up into other Functions
-                I've placed them in int main just so we could start building*/
+int main () 
+/* These will more than likely be broken up into other Functions
+ I've placed them in int main just so we could start building*/
 {
     // The total number of days spent on the trip.
+    // DONE
     int days;
     cout << "days: ";
     days = getValue();
 
     /* The time of departure on the first day of the trip and 
         the time of arrival back home on the last day of the trip */
+    // DONE
     int timeOfDepartureHr, timeOfDepartureMin, timeOfArrivalHr, timeOfArrivalMin;
     string am_pm_depart, am_pm_arrive;
 
@@ -33,6 +35,7 @@ int main () /* These will more than likely be broken up into other Functions
     getTime(timeOfArrivalHr, timeOfArrivalMin, am_pm_arrive);
 
     // The amount of any round -trip airfare
+    // DONE
     double airfare;
     cout << "airfare: $";
     airfare = getValue();
@@ -47,23 +50,26 @@ int main () /* These will more than likely be broken up into other Functions
         be an integer or floating point? AND if floating point,
         should be have this number round up so that they are charged
         for the mile as a whole? I know companies do this a lot.*/
+    // DONE
     double allowanceVeh;
     int milesDriven;
     const double ALLOWANCE_VEHICLE = 0.58;
     milesDrivenCalc(ALLOWANCE_VEHICLE, milesDriven, allowanceVeh);
 
-
     /* Parking fees. (The company allows up to $12 per day. Anything
         in excess of this must be paid by the employee.)*/
+    // DONE
     double feeParking, feeParkingExcess;
-    getParkingFee(feeParking, feeParkingExcess, days);
+    const double ALLOWANCE_PARKING = 12.00;
+    cout << "Parking Fees: $";
+    getFees(ALLOWANCE_PARKING, feeParking, feeParkingExcess, days);
 
     /* Taxi fees. (The company allows up to $40 per day for each day
         a taxi was used. Anything in excess of this must be paid by the employee.)*/
-    double feeTaxi;
+    double feeTaxi, feeTaxiExcess;
     const double ALLOWANCE_TAXI = 40.00;
-    cout << "feeTaxi: $";
-    feeTaxi = getValue();
+    cout << "Taxi Fees: $";
+    getFees(ALLOWANCE_TAXI, feeTaxi, feeTaxiExcess, days);
 
     // Conference or seminar registration fees
     double feeConf;
@@ -72,10 +78,10 @@ int main () /* These will more than likely be broken up into other Functions
 
     /* Hotel expenses. (The company allows up to $90 per night for
         lodging. Anything in excess of this amount must be paid by the employee.)*/
-    double hotel;
+    double feeHotel, feeHotelExcess;
     const double ALLOWANCE_HOTEL = 90.00;
     cout << "hotel: $";
-    hotel = getValue();
+    getFees(ALLOWANCE_HOTEL, feeHotel, feeHotelExcess, days);
 
     /* The cost of each meal eaten. On the first day of the trip,
         breakfast is allowed as an expense if the time of departure
@@ -94,9 +100,9 @@ int main () /* These will more than likely be broken up into other Functions
     
 
     printResults(days, timeOfDepartureHr, timeOfDepartureMin, am_pm_depart, 
-        timeOfArrivalHr, timeOfArrivalMin, am_pm_depart, airfare, 
-        carRental, milesDriven, feeParking, feeTaxi, feeConf, hotel, 
-        feeParkingExcess, allowanceVeh);
+        timeOfArrivalHr, timeOfArrivalMin, am_pm_arrive, airfare, 
+        carRental, milesDriven, allowanceVeh, feeParking, feeTaxi, feeConf, feeHotel, 
+        feeParkingExcess);
 
     return 0;
 }
@@ -129,7 +135,11 @@ int getTime(int& a, int& b, string& d)
         cin.clear();
         cin.ignore(numeric_limits<streamsize>::max(), '\n');
         cin >> a >> c >> b >> d;
-    } ;
+    }
+    if(d=="am")
+        d = "AM";
+    if(d=="pm")
+        d = "PM";
     return 0;
 }
 /******************************************************************************************/
@@ -144,8 +154,8 @@ int getTime(int& a, int& b, string& d)
     written to a file. 
 */
 void printResults(int days, int DeHr, int DeMin, string DAmPm, int ArHr, int ArMin, 
-        string ArAmPm, double q, double w, int z, double fp, double ft, 
-        double fc, double h, double fpe, double av)
+        string ArAmPm, double air, double rent, int z, double av, double fp, double ft, 
+        double fc, double h, double fpe)
 {
     /* This is how we will output for time. And for the time being, will
         be a test for our outputs while troubleshooting.*/ 
@@ -158,15 +168,17 @@ void printResults(int days, int DeHr, int DeMin, string DAmPm, int ArHr, int ArM
             << setw(2) << setfill('0') << ArMin << ' '
             << ArAmPm << endl;
     cout << fixed << showpoint << setprecision(2);
-    cout << "airfair = $" << q << endl;
-    cout << "carRental = $" << w << endl;
-        cout << "allowanceVeh = $" << av << endl;
-
-
+    cout << "airfair = $" << air << endl;
+    cout << "carRental = $" << rent << endl;
     cout << "milesDriven = " << z << endl;
+    cout << "allowanceVeh = $" << av << endl;
     cout << "feeParking = $" << fp << endl;
-        cout << "feeParkingExcess = $" << fpe << endl;
-
+    cout << "Parking allowance = $" << 20 * 12 << endl;
+    cout << "Was Parking Allowance Exceeded? ";
+    if(fpe<=0)
+        cout << "No" << endl;
+    else
+        cout << "Yes\nfeeParkingExcess = $" << fpe << endl;    
     cout << "feeTaxi = $" << ft << endl;
     cout << "feeConf = $" << fc << endl;
     cout << "hotel: $" << h << endl;
@@ -180,6 +192,12 @@ void milesDrivenCalc(const double& ALLOWANCE_VEHICLE, int& milesDriven, double& 
     cout << "1. Yes" << endl;
     cout << "2. No" << endl;
     cin >> choice;
+        // Input Validity 
+        while(choice != 1 && choice != 2)
+        {
+            cout << "ERROR: Please enter valid option: ";
+            cin >> choice;
+        }
     cout << "Enter miles driven: ";
     milesDriven = getValue();
 
@@ -187,14 +205,11 @@ void milesDrivenCalc(const double& ALLOWANCE_VEHICLE, int& milesDriven, double& 
     allowanceVeh = milesDriven * ALLOWANCE_VEHICLE;
 }
 /******************************************************************************************/
-void getParkingFee(double& feeParking, double& feeParkingExcess, int days)
+void getFees(const double& ALLOWANCE, double& fee, double& feeExcess, int days)
 {
 /* Parking fees. (The company allows up to $12 per day. Anything
         in excess of this must be paid by the employee.)*/
-    
-    const double ALLOWANCE_PARKING = 12.00;
-    cout << "feeParking: $";
-    feeParking = getValue();
+    fee = getValue();
     // Calculates the amount the user then has to pay.
-    feeParkingExcess = feeParking - (days * ALLOWANCE_PARKING);
+    feeExcess = fee - (days * ALLOWANCE);
 }
