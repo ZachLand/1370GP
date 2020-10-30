@@ -9,10 +9,10 @@ using namespace std;
 // Prototypes
 double getValue();
 void milesDrivenCalc(const double&, int&, double&);
-void getParkingFee(double&);
+void getParkingFee(double&, double&, int);
 int getTime(int&, int&, string&);
 void printResults(int, int, int, string, int, int, string, double, double, int, 
-        double, double, double, double);
+        double, double, double, double, double, double);
 
 int main () /* These will more than likely be broken up into other Functions
                 I've placed them in int main just so we could start building*/
@@ -50,8 +50,6 @@ int main () /* These will more than likely be broken up into other Functions
     double allowanceVeh;
     int milesDriven;
     const double ALLOWANCE_VEHICLE = 0.58;
-    cout << "miles driven: ";
-    milesDriven = getValue();
     milesDrivenCalc(ALLOWANCE_VEHICLE, milesDriven, allowanceVeh);
 
 
@@ -59,9 +57,6 @@ int main () /* These will more than likely be broken up into other Functions
         in excess of this must be paid by the employee.)*/
     double feeParking, feeParkingExcess;
     getParkingFee(feeParking, feeParkingExcess, days);
-    const double ALLOWANCE_PARKING = 12.00;
-    cout << "feeParking: $";
-    feeParking = getValue();
 
     /* Taxi fees. (The company allows up to $40 per day for each day
         a taxi was used. Anything in excess of this must be paid by the employee.)*/
@@ -100,7 +95,8 @@ int main () /* These will more than likely be broken up into other Functions
 
     printResults(days, timeOfDepartureHr, timeOfDepartureMin, am_pm_depart, 
         timeOfArrivalHr, timeOfArrivalMin, am_pm_depart, airfare, 
-        carRental, milesDriven, feeParking, feeTaxi, feeConf, hotel);
+        carRental, milesDriven, feeParking, feeTaxi, feeConf, hotel, 
+        feeParkingExcess, allowanceVeh);
 
     return 0;
 }
@@ -149,7 +145,7 @@ int getTime(int& a, int& b, string& d)
 */
 void printResults(int days, int DeHr, int DeMin, string DAmPm, int ArHr, int ArMin, 
         string ArAmPm, double q, double w, int z, double fp, double ft, 
-        double fc, double h)
+        double fc, double h, double fpe, double av)
 {
     /* This is how we will output for time. And for the time being, will
         be a test for our outputs while troubleshooting.*/ 
@@ -164,8 +160,13 @@ void printResults(int days, int DeHr, int DeMin, string DAmPm, int ArHr, int ArM
     cout << fixed << showpoint << setprecision(2);
     cout << "airfair = $" << q << endl;
     cout << "carRental = $" << w << endl;
+        cout << "allowanceVeh = $" << av << endl;
+
+
     cout << "milesDriven = " << z << endl;
     cout << "feeParking = $" << fp << endl;
+        cout << "feeParkingExcess = $" << fpe << endl;
+
     cout << "feeTaxi = $" << ft << endl;
     cout << "feeConf = $" << fc << endl;
     cout << "hotel: $" << h << endl;
@@ -179,12 +180,14 @@ void milesDrivenCalc(const double& ALLOWANCE_VEHICLE, int& milesDriven, double& 
     cout << "1. Yes" << endl;
     cout << "2. No" << endl;
     cin >> choice;
+    cout << "Enter miles driven: ";
+    milesDriven = getValue();
 
-    if(choice = 1)
+    if(choice == 1)
     allowanceVeh = milesDriven * ALLOWANCE_VEHICLE;
 }
 /******************************************************************************************/
-void getParkingFee(double& feeParking, double& feeParkingExcess, int& days)
+void getParkingFee(double& feeParking, double& feeParkingExcess, int days)
 {
 /* Parking fees. (The company allows up to $12 per day. Anything
         in excess of this must be paid by the employee.)*/
@@ -192,5 +195,6 @@ void getParkingFee(double& feeParking, double& feeParkingExcess, int& days)
     const double ALLOWANCE_PARKING = 12.00;
     cout << "feeParking: $";
     feeParking = getValue();
+    // Calculates the amount the user then has to pay.
     feeParkingExcess = feeParking - (days * ALLOWANCE_PARKING);
 }
