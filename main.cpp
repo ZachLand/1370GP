@@ -9,6 +9,7 @@ using namespace std;
 // Prototypes
 double getValue();
 double milesDriven();
+void getParkingFee(double&);
 int getTime(int&, int&, string&);
 void printResults(int, int, int, string, int, int, string, double, double, int, 
         double, double, double, double);
@@ -54,7 +55,8 @@ int main () /* These will more than likely be broken up into other Functions
 
     /* Parking fees. (The company allows up to $12 per day. Anything
         in excess of this must be paid by the employee.)*/
-    double feeParking;
+    double feeParking, feeParkingExcess;
+    getParkingFee(feeParking, feeParkingExcess, days);
     const double ALLOWANCE_PARKING = 12.00;
     cout << "feeParking: $";
     feeParking = getValue();
@@ -173,4 +175,15 @@ double milesDriven()
     
     cout << "Was a private vehicle used? ";
     cin >> choice;
+}
+
+void getParkingFee(double& feeParking, double& feeParkingExcess, int& days)
+{
+/* Parking fees. (The company allows up to $12 per day. Anything
+        in excess of this must be paid by the employee.)*/
+    
+    const double ALLOWANCE_PARKING = 12.00;
+    cout << "feeParking: $";
+    feeParking = getValue();
+    feeParkingExcess = feeParking - (days * ALLOWANCE_PARKING);
 }
