@@ -220,8 +220,9 @@ void meals(int& timeOfDepartureHr, int& timeOfArrivalHr, string& d)
     const int B_ALLOW = 18;
     const int L_ALLOW = 12;
     const int D_ALLOW = 20;
-    
-    double bfast1, lnch1, dnr1, bfast2, lnch2, dnr2;
+
+    double bfast1, lnch1, dnr1, bfast2, lnch2, dnr2, bfast, lnch, dnr,
+    oweb, owel, owed;
 /******** FIRST DAY ****************************************************************************/
     if (d == "am" || d == "AM")
     {
@@ -282,4 +283,42 @@ void meals(int& timeOfDepartureHr, int& timeOfArrivalHr, string& d)
         else
         cout << "Time of arrival was too early for any meals on the last day!";
     }
+    bfast = bfast1 + bfast2;
+    lnch = lnch1 + lnch2;
+    dnr = dnr1 + dnr2;
+
+    oweb = bfast - B_ALLOW;
+    if(oweb < 0)
+    {
+    oweb = 0;
+    cout << "You owe nothing for breakfast!" << endl;
+    }
+    else
+    {
+    cout << "You owe $" << oweb << " for breakfast!" << endl;
+    }
+    
+    owel = lnch - L_ALLOW;
+    if(owel < 0)
+    {
+    owel = 0;
+    cout << "You owe nothing for lunch!" << endl;
+    }
+    else
+    {
+    cout << "You owe $" << owel << " for lunch!" << endl;
+    }
+
+    owed = dnr - D_ALLOW;
+    if(owed < 0)
+    {
+    owed = 0;
+    cout << "you owe nothing for dinner!" << endl;
+    }
+    else
+    {
+    cout << "You owe $" << owed << " for dinner!" << endl;
+    }
+    
+
 }
