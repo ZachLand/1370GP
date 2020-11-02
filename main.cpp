@@ -226,7 +226,7 @@ void meals(int days, int timeOfDepartureHr, int timeOfArrivalHr, string am_pm_de
     oweb, owel1, owel2, owel, owed1, owed2, owed, bfast, lnch, dnr, bfastTemp, lnchTemp, dnrTemp;
     int i;
 
-    for(i = days - 2; i > 0; i--)
+    for(i = days; i > 2; i--)
     {
         cout << "How much did breakfast cost?";
         cin >> bfast;
