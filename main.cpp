@@ -10,7 +10,7 @@ double getValue();
 int getTime(int&, int&, string&);
 void milesDrivenCalc(const double&, int&, double&);
 void getFees(const double&, double&, double&, int);
-void meals(int&, int&, string&);
+void meals(int, int, int, string, string, double&, double&);
 void printResults(int, int, int, string, int, int, string, double, double, int, 
         double, double, double, double, double, double);
 
@@ -18,6 +18,7 @@ int main ()
 /* These will more than likely be broken up into other Functions
  I've placed them in int main just so we could start building*/
 {
+    double inBudget, overBudget;
     // The total number of days spent on the trip.
     // DONE
     int days;
@@ -215,69 +216,82 @@ void getFees(const double& ALLOWANCE, double& fee, double& feeExcess, int days)
     feeExcess = fee - (days * ALLOWANCE);
 }
 /******************************************************************************************/
-void meals(int& timeOfDepartureHr, int& timeOfArrivalHr, string& d)
+void meals(int days, int timeOfDepartureHr, int timeOfArrivalHr, string am_pm_depart, string am_pm_arrive)
 {
     const int B_ALLOW = 18;
     const int L_ALLOW = 12;
     const int D_ALLOW = 20;
+    
+    double bfast1, lnch1, dnr1, bfast2, lnch2, dnr2, bfastT, lnchT, dnrT, oweb1, oweb2,
+    oweb, owel1, owel2, owel, owed1, owed2, owed, bfast, lnch, dnr, bfastTemp, lnchTemp, dnrTemp;
+    int i;
 
-    double bfast1, lnch1, dnr1, bfast2, lnch2, dnr2, bfast, lnch, dnr,
-    oweb1, owel1, owed1, oweb2, owel2, owed2;
+    for(i = days - 2; i > 0; i--)
+    {
+        cout << "How much did breakfast cost?";
+        cin >> bfast;
+        cout << "How much did lunch cost?";
+        cin >> lnch;
+        cout << "How much did dinner cost?";
+        cin >> dnr;
+
+        bfastTemp = bfast - B_ALLOW;
+    }
 /******** FIRST DAY ****************************************************************************/
-    if (d == "am" || d == "AM")
+    if (am_pm_depart == "am" || am_pm_depart == "AM")
     {
         if (timeOfDepartureHr < 7)
         {
-        cout << "How much did breakfast cost in the first day? $";
+        cout << "How much did breakfast cost on the first day? $";
         cin >> bfast1;
-        cout << "How much did lunch cost in the first day? $";
+        cout << "How much did lunch cost on the first day? $";
         cin >> lnch1;
-        cout << "How much did dinner cost in the first day? $";
+        cout << "How much did dinner cost on the first day? $";
         cin >> dnr1;
         }
         else if (timeOfDepartureHr < 12)
         {
-        cout << "How much did lunch cost in the first day? $";
+        cout << "How much did lunch cost on the first day? $";
         cin >> lnch1;
-        cout << "How much did dinner cost in the first day? $";
+        cout << "How much did dinner cost on the first day? $";
         cin >> dnr1;
         }
     }
-    if (d == "pm" || d == "PM")
+    if (am_pm_depart == "pm" || am_pm_depart == "PM")
     {
         if (timeOfDepartureHr < 6)
         {
-            cout << "How much did dinner cost in the first day? $";
+            cout << "How much did dinner cost on the first day? $";
             cin >> dnr1;
         }
         else
         cout << "Time of departure was too late for any meals on the first day!";
     }
 /******* LAST DAY *****************************************************************************/
-    if (d == "am" || d == "AM")
+    if (am_pm_arrive == "am" || am_pm_arrive == "AM")
     {
         if (timeOfArrivalHr > 8)
         {
-        cout << "How much did breakfast cost in the first day? $";
+        cout << "How much did breakfast cost on the first day? $";
         cin >> bfast2;
-        cout << "How much did lunch cost in the first day? $";
+        cout << "How much did lunch cost on the first day? $";
         cin >> lnch2;
-        cout << "How much did dinner cost in the first day? $";
+        cout << "How much did dinner cost on the first day? $";
         cin >> dnr2;
         }
     }
-    if (d == "pm" || d == "PM")
+    if (am_pm_arrive == "pm" || am_pm_arrive == "PM")
     {
         if (timeOfArrivalHr > 1)
         {
-            cout << "How much did lunch cost in the last day? $";
+            cout << "How much did lunch cost on the last day? $";
             cin >> lnch2;
-            cout << "How much did dinner cost in the first day? $";
+            cout << "How much did dinner cost on the first day? $";
             cin >> dnr2;
         }
         else if (timeOfArrivalHr > 7)
         {
-            cout << "How much did dinner cost in the last day? $";
+            cout << "How much did dinner cost on the last day? $";
             cin >> dnr2;
         }
         else
@@ -353,5 +367,4 @@ void meals(int& timeOfDepartureHr, int& timeOfArrivalHr, string& d)
     cout << "You owe $" << owed2 << " for dinner on the last day!" << endl;
     }
     
-
 }
