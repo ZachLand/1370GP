@@ -222,7 +222,7 @@ void meals(int& timeOfDepartureHr, int& timeOfArrivalHr, string& d)
     const int D_ALLOW = 20;
 
     double bfast1, lnch1, dnr1, bfast2, lnch2, dnr2, bfast, lnch, dnr,
-    oweb, owel, owed;
+    oweb1, owel1, owed1, oweb2, owel2, owed2;
 /******** FIRST DAY ****************************************************************************/
     if (d == "am" || d == "AM")
     {
@@ -286,38 +286,71 @@ void meals(int& timeOfDepartureHr, int& timeOfArrivalHr, string& d)
     bfast = bfast1 + bfast2;
     lnch = lnch1 + lnch2;
     dnr = dnr1 + dnr2;
-
-    oweb = bfast - B_ALLOW;
-    if(oweb < 0)
+/****************************BREAKFAST CALCULATIONS**********************************************/
+    oweb1 = bfast1 - B_ALLOW;
+    if(oweb1 < 0)
     {
-    oweb = 0;
-    cout << "You owe nothing for breakfast!" << endl;
+    oweb1 = 0;
+    cout << "You owe nothing for breakfast on the first day!" << endl;
     }
     else
     {
-    cout << "You owe $" << oweb << " for breakfast!" << endl;
-    }
-    
-    owel = lnch - L_ALLOW;
-    if(owel < 0)
-    {
-    owel = 0;
-    cout << "You owe nothing for lunch!" << endl;
-    }
-    else
-    {
-    cout << "You owe $" << owel << " for lunch!" << endl;
+    cout << "You owe $" << oweb1 << " for breakfast on the first day!" << endl;
     }
 
-    owed = dnr - D_ALLOW;
-    if(owed < 0)
+    oweb2 = bfast2 - B_ALLOW;
+    if(oweb2 < 0)
     {
-    owed = 0;
-    cout << "you owe nothing for dinner!" << endl;
+    oweb2 = 0;
+    cout << "You owe nothing for breakfast on the last day!" << endl;
     }
     else
     {
-    cout << "You owe $" << owed << " for dinner!" << endl;
+    cout << "You owe $" << oweb2 << " for breakfast on the last day!" << endl;
+    }
+/******************************LUNCH CALCULATIONS ***********************************************/
+    owel1 = lnch1 - L_ALLOW;
+    if(owel1 < 0)
+    {
+    owel1 = 0;
+    cout << "You owe nothing for lunch on the first day!" << endl;
+    }
+    else
+    {
+    cout << "You owe $" << owel1 << " for lunch on the first day!" << endl;
+    }
+
+    owel2 = lnch2 - L_ALLOW;
+    if(owel2 < 0)
+    {
+    owel2 = 0;
+    cout << "You owe nothing for lunch on the last day!" << endl;
+    }
+    else
+    {
+    cout << "You owe $" << owel2 << " for lunch on the last day!" << endl;
+    }
+/********************************DINNER CALCULATIONS **********************************************/
+    owed1 = dnr1 - D_ALLOW;
+    if(owed1 < 0)
+    {
+    owed1 = 0;
+    cout << "you owe nothing for dinner on the first day!" << endl;
+    }
+    else
+    {
+    cout << "You owe $" << owed1 << " for dinner on the first day!" << endl;
+    }
+
+    owed2 = dnr2 - D_ALLOW;
+    if(owed2 < 0)
+    {
+    owed2 = 0;
+    cout << "you owe nothing for dinner on the last day!" << endl;
+    }
+    else
+    {
+    cout << "You owe $" << owed2 << " for dinner on the last day!" << endl;
     }
     
 
