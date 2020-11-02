@@ -130,7 +130,7 @@ int getTime(int& a, int& b, string& d)
     static char c; /* We can use time as integers having them separated
                     with ':' */
     cin >> a >> c >> b >> d;
-    while(!((a>0 && a<=12) && (b>0 && b<=59) && 
+    while(!((a>0 && a<=12) && (b>=0 && b<=59) && 
         (d=="AM"||d=="am"||d=="PM"||d=="pm")))
     {
         cout << "Please enter a valid time" << endl;
