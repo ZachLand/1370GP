@@ -8,18 +8,20 @@ using namespace std;
 // Prototypes
 double getValue();
 void getTime(int&, int&, string&);
-void milesDrivenCalc(const double&, int&, double&);
+void milesDrivenCalc(const double&, int&, double&, string&);
 void getFees(const double&, double&, double&, int);
 void meals(int, int, int, string, string, double&, double&);
-void taxiFeeLoop(int, const double, double&, double&);
+void feeLoop(int, const double, double&, double&, int&);
 void hotelFeeLoop(int, const double, double&, double&);
 void parkingFeeLoop(int, const double, double&, double&);
 void mealComp(double, double, double, double&, double&, double&,
         double&, double&, double& );
-void printResults(int, int, int, string, int, int, string, double, 
-        double, int, double, double, double, double, double, double, double, double);
+void printResult(int, int, int, string, int, int, string, double, 
+        double, string, int, double, int, double, double, int, 
+        double, double, double, int, double, double, double, double);
 
 ofstream outFile;
+
 
 int main () 
 /* These will more than likely be broken up into other Functions
@@ -31,7 +33,14 @@ int main ()
     outFile.open("Trip Expenses.txt");
     int days;
     cout << "Days: ";
-    days = getValue();
+    do
+    {
+        days = getValue();
+        if (days < 1)
+            cout << "ERROR: Days need to be greater than 0." << endl;
+    } while (days < 1);
+
+    
     /* The time of departure of the trip and 
         the time of arrival back home of the trip */
     // DONE
@@ -55,42 +64,44 @@ int main ()
     carRental = getValue();
 
     /* Miles driven, if a private vehicle was used. Vehicle allowance 
-        is $0.58 per mile. Question will be: Do we want the miles to
-        be an integer or floating point? AND if floating point,
-        should be have this number round up so that they are charged
-        for the mile as a whole? I know companies do this a lot.*/
+        is $0.58 per mile. */
     // DONE
     double allowanceVeh = 0;
     int milesDriven = 0;
+    string privateVeh;
     const double ALLOWANCE_VEHICLE = 0.58;
-    milesDrivenCalc(ALLOWANCE_VEHICLE, milesDriven, allowanceVeh);
+    milesDrivenCalc(ALLOWANCE_VEHICLE, milesDriven, allowanceVeh, privateVeh);
 
     /* Parking fees. (The company allows up to $12 per day. Anything
         in excess of this must be paid by the employee.)*/
     // DONE
-    double feeParking, feeParkingExcess;
+    int parkingDays;
+    double parkingAllowTot, parkingAllowExceed = 0;
     const double ALLOWANCE_PARKING = 12.00;
-    cout << "Parking Fees: $";
-    getFees(ALLOWANCE_PARKING, feeParking, feeParkingExcess, days);
+    cout << "\nHow much were the parking fees? " << endl;
+    feeLoop(days, ALLOWANCE_PARKING, parkingAllowExceed, parkingAllowTot, parkingDays);
 
     /* Taxi fees. (The company allows up to $40 per day for each day
         a taxi was used. Anything in excess of this must be paid by the employee.)*/
-    double feeTaxi, feeTaxiExcess;
+    int taxiDays;
+    double taxiAllowExceed = 0, taxiAllowTot;
     const double ALLOWANCE_TAXI = 40.00;
-    cout << "Taxi Fees: $";
-    getFees(ALLOWANCE_TAXI, feeTaxi, feeTaxiExcess, days);
+    cout << "\nHow much were the taxi fees? " << endl;
+    feeLoop(days, ALLOWANCE_TAXI, taxiAllowExceed, taxiAllowTot, taxiDays);
 
     // Conference or seminar registration fees
     double feeConf;
-    cout << "Conference or seminar registration fees: $";
+    cout << "\nConference or seminar registration fees: $";
     feeConf = getValue();
 
     /* Hotel expenses. (The company allows up to $90 per night for
         lodging. Anything in excess of this amount must be paid by the employee.)*/
-    double feeHotel, feeHotelExcess;
+    double hotelAllowExceed = 0, hotelAllowTot;
     const double ALLOWANCE_HOTEL = 90.00;
-    cout << "hotel: $";
-    getFees(ALLOWANCE_HOTEL, feeHotel, feeHotelExcess, days);
+    int hotelDays;
+    //getFees(ALLOWANCE_HOTEL, hotelAllowTot, hotelAllowExceed, days);
+    cout << "\nHow much were the hotel fees? " << endl;
+    feeLoop(days, ALLOWANCE_HOTEL, hotelAllowExceed, hotelAllowTot, hotelDays);
 
     /* The cost of each meal eaten. of the trip,
         breakfast is allowed as an expense if the time of departure
@@ -103,15 +114,18 @@ int main ()
         allowable meals. (The company allows up to $18 for breakfast,
         $12 for lunch, and $20 for dinner. Anything in excess of this
         must be paid by the employee.)*/
-    double allowanceTotal, allowanceExceeded;
+    double allowanceTotal, allowanceExceeded = 0;
+    cout << "\n***Meals on Trip***" << endl;
     meals(days, timeOfDepartureHr, timeOfArrivalHr, am_pm_depart, am_pm_arrive, 
             allowanceTotal, allowanceExceeded);
     
+    printResult( days,  timeOfDepartureHr,  timeOfDepartureMin,  am_pm_depart, 
+         timeOfArrivalHr,  timeOfArrivalMin,  am_pm_arrive,  airfare, 
+         carRental,  privateVeh,  milesDriven, allowanceVeh, parkingDays, 
+         parkingAllowTot,  parkingAllowExceed,  taxiDays,  taxiAllowTot,
+         taxiAllowExceed,  feeConf,  hotelDays,  hotelAllowTot, 
+         hotelAllowExceed,  allowanceTotal,  allowanceExceeded);
 
-    printResults(days, timeOfDepartureHr, timeOfDepartureMin, am_pm_depart, 
-        timeOfArrivalHr, timeOfArrivalMin, am_pm_arrive, airfare, 
-        carRental, milesDriven, allowanceVeh, feeParking, feeTaxi, feeConf, feeHotel, 
-        feeParkingExcess, allowanceTotal, allowanceExceeded);
 
     outFile.close();
     return 0;
@@ -171,67 +185,77 @@ void getTime(int& a, int& b, string& d)
     and total amount allowed for the entire trip. This report should be
     written to a file. 
 */
-void printResults(int days, int DeHr, int DeMin, string DAmPm, int ArHr, int ArMin, 
-        string ArAmPm, double air, double rent, int z, double av, double fp, double ft, 
-        double fc, double h, double fpe, double allowanceTotal, double allowanceExceeded)
+void printResult(int days, int timeOfDeparHr, int timeOfDepartMin, string am_pm_depart, 
+        int timeOfArriveHr, int timeOfArriveMin, string am_pm_arrive, double airfare, 
+        double carRental, string privateVeh, int milesDriven, double allowanceVeh, 
+        int parkingDays, double parkingAllow, double parkingExceed, int taxiDays, 
+        double taxiAllow, double taxiExceed, double confFees, int hotelDays, 
+        double hotelAllow, double hotelExceed, double mealsAllow, double mealsExceed)
 {
-    /* This is how we will output for time. And for the time being, will
-        be a test for our outputs while troubleshooting.*/ 
-    cout << endl;
-    cout << "days: " << days << endl;
-    cout << "Time of departure: " << setw(2) << setfill('0') << DeHr 
-            << ':' << setw(2) << setfill('0') << DeMin
-            << ' ' << DAmPm << endl;
-    cout << "Time of arrival" << setw(2) << setfill('0') << ArHr << ':' 
-            << setw(2) << setfill('0') << ArMin << ' '
-            << ArAmPm << endl;
+    // Declare variables
+    double totalAllow, totalExceed;
+    totalAllow = airfare + carRental + allowanceVeh + parkingAllow + taxiAllow + confFees + hotelAllow + mealsAllow;
+    totalExceed = parkingExceed + taxiExceed + hotelExceed + mealsExceed;
+
+    // Output results to Terminal
+    cout << "\n\t***** BUSINESS EXPENSE REPORT *****\n\n";
+    cout << "Days:\t\t\t" << days << endl;
+    cout << "Time of Departure:\t" << setw(2) << setfill('0') << timeOfDeparHr 
+            << ':' << setw(2) << setfill('0') << timeOfDepartMin
+            << ' ' << am_pm_depart << endl;
+    cout << "Time of Arrival:\t" << setw(2) << setfill('0') << timeOfArriveHr << ':' 
+            << setw(2) << setfill('0') << timeOfArriveMin << ' '
+            << am_pm_arrive << endl;
+
+    cout << "/////////////////////////////////////////" << endl;
     cout << fixed << showpoint << setprecision(2);
-    cout << "Airfare = $" << air << endl;
-    cout << "Car rental = $" << rent << endl;
-    cout << "Miles driven = " << z << endl;
-    cout << "Vehicle allowance = $" << av << endl;
-    cout << "Parking fees = $" << fp << endl;
-    cout << "Parking allowance = $" << days * 12.00 << endl;
-    cout << "Was Parking Allowance Exceeded? ";
-    if(fpe<=0)
-        cout << "No" << endl;
-    else
-        cout << "Yes\nfeeParkingExcess = $" << fpe << endl;    
-    cout << "Taxi fees = $" << ft << endl;
-    cout << "Conference or seminar registration fees = $" << fc << endl;
-    cout << "Hotel: $" << h << endl;
-    cout << "Total allowance spent = $" << allowanceTotal << endl;
-    cout << "Total allowance exceeded = $" << allowanceExceeded << endl;
-    /****************************out file!****************************************/
-    outFile << "days: " << days << endl;
-    outFile << "Time of departure: " << setw(2) << setfill('0') << DeHr 
-            << ':' << setw(2) << setfill('0') << DeMin
-            << ' ' << DAmPm << endl;
-    outFile << "Time of arrival" << setw(2) << setfill('0') << ArHr << ':' 
-            << setw(2) << setfill('0') << ArMin << ' '
-            << ArAmPm << endl;
+    cout << setfill(' ') << setw(20) << "ITEMS" << setw(30) << "USED" << setw(25) << "WITHIN ALLOWANCES" << setw(15) << "EXCEEDANCE" << endl;
+    cout << "Airfare" << setw(56) << "$" << airfare << endl;
+    cout << "Car Rental" << setw(53) << "$" << carRental << endl;
+    cout << "Private Vehicle Used:" << setw(28) << privateVeh << endl;
+    cout << "\tMiles Driven ($0.58/mile)" << setw(14) << milesDriven << " miles\t" << setw(7) << "$" << allowanceVeh << endl;
+    cout << "Parking Fees ($12/day)" << setw(25) << parkingDays << " days\t" << setw(7) << "$" << parkingAllow << "\t" << setw(11) << "$" << parkingExceed << endl;
+    cout << "Taxi Fees ($40/day)" << setw(28) << taxiDays << " days\t" << setw(7) << "$" << taxiAllow << "\t" << setw(11) << "$" << taxiExceed << endl;
+    cout << "Conference/Seminar Registration Fees: " << setw(25) << "$" << confFees << endl;
+    cout << "Hotel Fees ($90/night)" << setw(25) << hotelDays << " nights\t" << setw(7) << "$" << hotelAllow << "\t" << setw(11) << "$" << hotelExceed << endl;
+    cout << "Meals" << setw(58) << "$" << mealsAllow << "\t" << setw(11) << "$" << mealsExceed << endl;
+    cout << "---------------------------------------" << setw(31) << "---------" << setw(20) << "----------" << endl;
+    cout << "Total" << setw(58) << "$" << totalAllow << "\t" << setw(11) << "$" << totalExceed << endl;
+
+    cout << "\n\nThe total amount for this trip was $" << totalExceed + totalAllow << ", of which you will have to pay $" << totalExceed << " for exceeding the budget." << endl;
+
+    // Output results to file.
+    outFile << "\n\t***** BUSINESS EXPENSE REPORT *****\n\n";
+    outFile << "Days:\t\t\t" << days << endl;
+    outFile << "Time of Departure:\t" << setw(2) << setfill('0') << timeOfDeparHr 
+            << ':' << setw(2) << setfill('0') << timeOfDepartMin
+            << ' ' << am_pm_depart << endl;
+    outFile << "Time of Arrival:\t" << setw(2) << setfill('0') << timeOfArriveHr << ':' 
+            << setw(2) << setfill('0') << timeOfArriveMin << ' '
+            << am_pm_arrive << endl;
+
+    outFile << "/////////////////////////////////////////" << endl;
     outFile << fixed << showpoint << setprecision(2);
-    outFile << "Airfare = $" << air << endl;
-    outFile << "Car rental = $" << rent << endl;
-    outFile << "Miles driven = " << z << endl;
-    outFile << "Vehicle allowance = $" << av << endl;
-    outFile << "Parking fees = $" << fp << endl;
-    outFile << "Parking allowance = $" << days * 12.00 << endl;
-    outFile << "Was Parking Allowance Exceeded? ";
-    if(fpe<=0)
-        outFile << "No" << endl;
-    else
-        outFile << "Yes\nfeeParkingExcess = $" << fpe << endl;    
-    outFile << "Taxi fees = $" << ft << endl;
-    outFile << "Conference or seminar registration fees = $" << fc << endl;
-    outFile << "Hotel: $" << h << endl;
-    outFile << "Total allowance spent = $" << allowanceTotal << endl;
-    outFile << "Total allowance exceeded = $" << allowanceExceeded << endl;
+    outFile << setfill(' ') << setw(20) << "ITEMS" << setw(30) << "USED" << setw(25) << "WITHIN ALLOWANCES" << setw(15) << "EXCEEDANCE" << endl;
+    outFile << "Airfare" << setw(56) << "$" << airfare << endl;
+    outFile << "Car Rental" << setw(53) << "$" << carRental << endl;
+    outFile << "Private Vehicle Used:" << setw(28) << privateVeh << endl;
+    outFile << "\tMiles Driven ($0.58/mile)" << setw(18) << milesDriven << " miles\t" << setw(7) << "$" << allowanceVeh << endl;
+    outFile << "Parking Fees ($12/day)" << setw(25) << parkingDays << " days\t" << setw(7) << "$" << parkingAllow << "\t" << setw(11) << "$" << parkingExceed << endl;
+    outFile << "Taxi Fees ($40/day)" << setw(28) << taxiDays << " days\t" << setw(7) << "$" << taxiAllow << "\t" << setw(11) << "$" << taxiExceed << endl;
+    outFile << "Conference/Seminar Registration Fees: " << setw(25) << "$" << confFees << endl;
+    outFile << "Hotel Fees ($90/night)" << setw(25) << hotelDays << " nights\t" << setw(7) << "$" << hotelAllow << "\t" << setw(11) << "$" << hotelExceed << endl;
+    outFile << "Meals" << setw(58) << "$" << mealsAllow << "\t" << setw(11) << "$" << mealsExceed << endl;
+    outFile << "---------------------------------------" << setw(31) << "---------" << setw(20) << "----------" << endl;
+    outFile << "Total" << setw(58) << "$" << totalAllow << "\t" << setw(11) << "$" << totalExceed << endl;
+
+    outFile << "\n\nThe total amount for this trip was $" << totalExceed + totalAllow << ", of which you will have to pay $" << totalExceed << " for exceeding the budget." << endl;
 }
 /******************************************************************************************/
-void milesDrivenCalc(const double& ALLOWANCE_VEHICLE, int& milesDriven, double& allowanceVeh)
+void milesDrivenCalc(const double& ALLOWANCE_VEHICLE, int& milesDriven, double& allowanceVeh, string& privateVeh)
 {
     int choice;
+    privateVeh = "No";
     
     cout << "Was a private vehicle used? " << endl;
     cout << "1. Yes" << endl;
@@ -249,6 +273,7 @@ void milesDrivenCalc(const double& ALLOWANCE_VEHICLE, int& milesDriven, double& 
         cout << "Enter miles driven: ";
         milesDriven = getValue();
         allowanceVeh = milesDriven * ALLOWANCE_VEHICLE;
+        privateVeh = "Yes";
     }
 }
 /******************************************************************************************/
@@ -274,7 +299,7 @@ void meals(int days, int timeOfDepartureHr, int timeOfArrivalHr, string am_pm_de
 
 /******** FIRST DAY ****************************************************************************/
     // Conditions for AM on first day.
-    cout << "On day 1" << endl;
+    cout << "\nOn day 1" << endl;
     if (am_pm_depart == "am" || am_pm_depart == "AM")
     {
         // Ask for breakfast, lunch and dinner if betweem midnight and before 7am.
@@ -316,7 +341,7 @@ void meals(int days, int timeOfDepartureHr, int timeOfArrivalHr, string am_pm_de
     // if more than 2 day, ask for all meals in between first and last day.
     for(i = 2; i < days; i++)
     {
-        cout << "On day " << i << endl;
+        cout << "\nOn day " << i << endl;
         cout << "How much did breakfast cost? $";
         cin >> bfast;
         cout << "How much did lunch cost? $";
@@ -334,7 +359,7 @@ void meals(int days, int timeOfDepartureHr, int timeOfArrivalHr, string am_pm_de
     // Conditions for AM on last day.
     if (days >= 2)
     {
-        cout << "On day " << days << endl;
+        cout << "\nOn day " << days << endl;
         if (am_pm_arrive == "am" || am_pm_arrive == "AM")
         {
             // Ask for breakfast if between 8am and midnight.
@@ -432,59 +457,25 @@ void mealComp(double bfast, double lnch, double dnr, double& breakfast_total_all
         dinner_total_allowance += dnr;
 }
 /**************TAXI LOOP***********************************************************/
-void taxiFeeLoop(int days, const double ALLOWANCE_TAXI, double& taxiAllowExceed, double& taxiAllowTot)
+void feeLoop(int days, const double ALLOWANCE, double& allowExceed, double& allowTot, int& daysUsed)
 {
-    double taxiFees, taxiAllowExceed, taxiAllowTot;
-        for(int i = 1; i < days; i++)
+    double fees;
+    daysUsed = 0, allowTot = 0;
+        for(int i = 1; i <= days; i++)
     {
-        cout << "On day " << i << endl;
-        cout << "How much were the taxi fees? ";
-        cin >> taxiFees;
+        cout << "On day " << i << ": ";
+        fees = getValue();
+        
+        if (fees > 0)
+            daysUsed++;
 
-        if((taxiFees - ALLOWANCE_TAXI) > 0)
+        if((fees - ALLOWANCE) > 0)
         {
-            taxiAllowExceed += (taxiFees - ALLOWANCE_TAXI);
-            taxiAllowTot += ALLOWANCE_TAXI;
+            allowExceed += (fees - ALLOWANCE);
+            allowTot += ALLOWANCE;
         }
         else
-            taxiAllowTot += taxiFees;
+            allowTot += fees;
     }
-}
-/************HOTEL LOOP***************************************************************/
-void hotelFeeLoop(int days, const double ALLOWANCE_HOTEL, double& hotelAllowExceed, double& hotelAllowTot)
-{
-    double hotelFees, hotelAllowExceed, hotelAllowTot;
-        for(int i = 1; i < days; i++)
-    {
-        cout << "On day " << i << endl;
-        cout << "How much were the hotel fees? ";
-        cin >> hotelFees;
-
-        if((hotelFees - ALLOWANCE_HOTEL) > 0)
-        {
-            hotelAllowExceed += (hotelFees - ALLOWANCE_HOTEL);
-            hotelAllowTot += ALLOWANCE_HOTEL;
-        }
-        else
-            hotelAllowTot += hotelFees;
-    }
-}
-/************************PARKING LOOP**********************************************************/
-void parkingFeeLoop(int days, const double ALLOWANCE_PARKING, double& parkingAllowExceed, double& parkingAllowTot)
-{
-    double parkingFees, parkingAllowExceed, parkingAllowTot;
-        for(int i = 1; i < days; i++)
-    {
-        cout << "On day " << i << endl;
-        cout << "How much were the hotel fees? ";
-        cin >>parkingFees;
-
-        if((parkingFees - ALLOWANCE_PARKING) > 0)
-        {
-            parkingAllowExceed += (parkingFees - ALLOWANCE_PARKING);
-            parkingAllowTot += ALLOWANCE_PARKING;
-        }
-        else
-            parkingAllowTot += parkingFees;
-    }
+    cout << fees << " " << allowTot << " " << allowExceed << endl;
 }
