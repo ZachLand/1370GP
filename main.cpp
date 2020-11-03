@@ -11,6 +11,9 @@ void getTime(int&, int&, string&);
 void milesDrivenCalc(const double&, int&, double&);
 void getFees(const double&, double&, double&, int);
 void meals(int, int, int, string, string, double&, double&);
+void taxiFeeLoop(int, const double, double&, double&);
+void hotelFeeLoop(int, const double, double&, double&);
+void parkingFeeLoop(int, const double, double&, double&);
 void mealComp(double, double, double, double&, double&, double&,
         double&, double&, double& );
 void printResults(int, int, int, string, int, int, string, double, 
@@ -399,4 +402,61 @@ void mealComp(double bfast, double lnch, double dnr, double& breakfast_total_all
     }
     else // Otherwise, simply add it to the total allowance
         dinner_total_allowance += dnr;
+}
+/**************TAXI LOOP***********************************************************/
+void taxiFeeLoop(int days, const double ALLOWANCE_TAXI, double& taxiAllowExceed, double& taxiAllowTot)
+{
+    double taxiFees, taxiAllowExceed, taxiAllowTot;
+        for(int i = 1; i < days; i++)
+    {
+        cout << "On day " << i << endl;
+        cout << "How much were the taxi fees? ";
+        cin >> taxiFees;
+
+        if((taxiFees - ALLOWANCE_TAXI) > 0)
+        {
+            taxiAllowExceed += (taxiFees - ALLOWANCE_TAXI);
+            taxiAllowTot += ALLOWANCE_TAXI;
+        }
+        else
+            taxiAllowTot += taxiFees;
+    }
+}
+/************HOTEL LOOP***************************************************************/
+void hotelFeeLoop(int days, const double ALLOWANCE_HOTEL, double& hotelAllowExceed, double& hotelAllowTot)
+{
+    double hotelFees, hotelAllowExceed, hotelAllowTot;
+        for(int i = 1; i < days; i++)
+    {
+        cout << "On day " << i << endl;
+        cout << "How much were the hotel fees? ";
+        cin >> hotelFees;
+
+        if((hotelFees - ALLOWANCE_HOTEL) > 0)
+        {
+            hotelAllowExceed += (hotelFees - ALLOWANCE_HOTEL);
+            hotelAllowTot += ALLOWANCE_HOTEL;
+        }
+        else
+            hotelAllowTot += hotelFees;
+    }
+}
+/************************PARKING LOOP**********************************************************/
+void parkingFeeLoop(int days, const double ALLOWANCE_PARKING, double& parkingAllowExceed, double& parkingAllowTot)
+{
+    double parkingFees, parkingAllowExceed, parkingAllowTot;
+        for(int i = 1; i < days; i++)
+    {
+        cout << "On day " << i << endl;
+        cout << "How much were the hotel fees? ";
+        cin >>parkingFees;
+
+        if((parkingFees - ALLOWANCE_PARKING) > 0)
+        {
+            parkingAllowExceed += (parkingFees - ALLOWANCE_PARKING);
+            parkingAllowTot += ALLOWANCE_PARKING;
+        }
+        else
+            parkingAllowTot += parkingFees;
+    }
 }
