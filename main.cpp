@@ -456,19 +456,23 @@ void mealComp(double bfast, double lnch, double dnr, double& breakfast_total_all
     else // Otherwise, simply add it to the total allowance
         dinner_total_allowance += dnr;
 }
-/**************TAXI LOOP***********************************************************/
+/**************FEE LOOP***********************************************************/
 void feeLoop(int days, const double ALLOWANCE, double& allowExceed, double& allowTot, int& daysUsed)
 {
+    // Declare variables
     double fees;
     daysUsed = 0, allowTot = 0;
-        for(int i = 1; i <= days; i++)
+
+    // Loop until all days have been entered and calculated.
+    for(int i = 1; i <= days; i++)
     {
-        cout << "On day " << i << ": ";
+        cout << "On day " << i << ": $";
         fees = getValue();
         
+        // Counter for how many days item was used.
         if (fees > 0)
             daysUsed++;
-
+        // Check if fee goes over allowance
         if((fees - ALLOWANCE) > 0)
         {
             allowExceed += (fees - ALLOWANCE);
@@ -477,5 +481,4 @@ void feeLoop(int days, const double ALLOWANCE, double& allowExceed, double& allo
         else
             allowTot += fees;
     }
-    cout << fees << " " << allowTot << " " << allowExceed << endl;
 }
