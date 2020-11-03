@@ -11,8 +11,10 @@ int getTime(int&, int&, string&);
 void milesDrivenCalc(const double&, int&, double&);
 void getFees(const double&, double&, double&, int);
 void meals(int, int, int, string, string, double&, double&);
-void printResults(int, int, int, string, int, int, string, double, double, int, 
-        double, double, double, double, double, double);
+void mealComp(double, double, double, double&, double&, double&,
+        double&, double&, double& );
+void printResults(int, int, int, string, int, int, string, double, 
+        double, int, double, double, double, double, double, double, double, double);
 
 int main () 
 /* These will more than likely be broken up into other Functions
@@ -96,15 +98,14 @@ int main ()
         allowable meals. (The company allows up to $18 for breakfast,
         $12 for lunch, and $20 for dinner. Anything in excess of this
         must be paid by the employee.)*/
-    bool before7AM, before12PM, before6PM, before8AM, before1pm, before7pm;
-    double breakfast, lunch, dinner;
-    const double BREAKFAST = 18.00, LUNCH = 12.00, DINNER = 20.00;
+    double allowanceTotal, allowanceExceeded;
+    meals(days, timeOfDepartureHr, timeOfArrivalHr, am_pm_depart, am_pm_arrive, allowanceTotal, allowanceExceeded);
     
 
     printResults(days, timeOfDepartureHr, timeOfDepartureMin, am_pm_depart, 
         timeOfArrivalHr, timeOfArrivalMin, am_pm_arrive, airfare, 
         carRental, milesDriven, allowanceVeh, feeParking, feeTaxi, feeConf, feeHotel, 
-        feeParkingExcess);
+        feeParkingExcess, allowanceTotal, allowanceExceeded);
 
     return 0;
 }
@@ -157,7 +158,7 @@ int getTime(int& a, int& b, string& d)
 */
 void printResults(int days, int DeHr, int DeMin, string DAmPm, int ArHr, int ArMin, 
         string ArAmPm, double air, double rent, int z, double av, double fp, double ft, 
-        double fc, double h, double fpe)
+        double fc, double h, double fpe, double allowanceTotal, double allowanceExceeded)
 {
     /* This is how we will output for time. And for the time being, will
         be a test for our outputs while troubleshooting.*/ 
@@ -184,6 +185,8 @@ void printResults(int days, int DeHr, int DeMin, string DAmPm, int ArHr, int ArM
     cout << "feeTaxi = $" << ft << endl;
     cout << "feeConf = $" << fc << endl;
     cout << "hotel: $" << h << endl;
+    cout << "allowancetotal = $" << allowanceTotal << endl;
+    cout << "allowanceExceeded = $" << allowanceExceeded << endl;
 }
 /******************************************************************************************/
 void milesDrivenCalc(const double& ALLOWANCE_VEHICLE, int& milesDriven, double& allowanceVeh)
@@ -194,17 +197,19 @@ void milesDrivenCalc(const double& ALLOWANCE_VEHICLE, int& milesDriven, double& 
     cout << "1. Yes" << endl;
     cout << "2. No" << endl;
     cin >> choice;
-        // Input Validity 
-        while(choice != 1 && choice != 2)
-        {
-            cout << "ERROR: Please enter valid option: ";
-            cin >> choice;
-        }
-    cout << "Enter miles driven: ";
-    milesDriven = getValue();
-
+    // Input Validity 
+    while(choice != 1 && choice != 2)
+    {
+        cout << "ERROR: Please enter valid option: ";
+        cin >> choice;
+    }
+    
     if(choice == 1)
-    allowanceVeh = milesDriven * ALLOWANCE_VEHICLE;
+    {
+        cout << "Enter miles driven: ";
+        milesDriven = getValue();
+        allowanceVeh = milesDriven * ALLOWANCE_VEHICLE;
+    }
 }
 /******************************************************************************************/
 void getFees(const double& ALLOWANCE, double& fee, double& feeExcess, int days)
@@ -216,45 +221,32 @@ void getFees(const double& ALLOWANCE, double& fee, double& feeExcess, int days)
     feeExcess = fee - (days * ALLOWANCE);
 }
 /******************************************************************************************/
-void meals(int days, int timeOfDepartureHr, int timeOfArrivalHr, string am_pm_depart, string am_pm_arrive)
+void meals(int days, int timeOfDepartureHr, int timeOfArrivalHr, string am_pm_depart, string am_pm_arrive, double& allowanceTotal, double& allowanceExceeded)
 {
-    const int B_ALLOW = 18;
-    const int L_ALLOW = 12;
-    const int D_ALLOW = 20;
-    
     double bfast1, lnch1, dnr1, bfast2, lnch2, dnr2, bfastT, lnchT, dnrT, oweb1, oweb2,
-    oweb, owel1, owel2, owel, owed1, owed2, owed, bfast, lnch, dnr, bfastTemp, lnchTemp, dnrTemp;
+    oweb, owel1, owel2, owel, owed1, owed2, owed, bfast, lnch, dnr, bfastTemp, lnchTemp, dnrTemp,
+    breakfast_total_allowance = 0, lunch_total_allowance = 0, dinner_total_allowance = 0,
+    breakfast_total_exceeded = 0, lunch_total_exceeded = 0, dinner_total_exceeded = 0;
     int i;
 
-    for(i = days; i > 2; i--)
-    {
-        cout << "How much did breakfast cost?";
-        cin >> bfast;
-        cout << "How much did lunch cost?";
-        cin >> lnch;
-        cout << "How much did dinner cost?";
-        cin >> dnr;
-
-        bfastTemp = bfast - B_ALLOW;
-    }
 /******** FIRST DAY ****************************************************************************/
     if (am_pm_depart == "am" || am_pm_depart == "AM")
     {
         if (timeOfDepartureHr < 7)
         {
         cout << "How much did breakfast cost on the first day? $";
-        cin >> bfast1;
+        cin >> bfast;
         cout << "How much did lunch cost on the first day? $";
-        cin >> lnch1;
+        cin >> lnch;
         cout << "How much did dinner cost on the first day? $";
-        cin >> dnr1;
+        cin >> dnr;
         }
-        else if (timeOfDepartureHr < 12)
+        else if (timeOfDepartureHr >= 7 && timeOfDepartureHr < 12)
         {
         cout << "How much did lunch cost on the first day? $";
-        cin >> lnch1;
+        cin >> lnch;
         cout << "How much did dinner cost on the first day? $";
-        cin >> dnr1;
+        cin >> dnr;
         }
     }
     if (am_pm_depart == "pm" || am_pm_depart == "PM")
@@ -262,109 +254,103 @@ void meals(int days, int timeOfDepartureHr, int timeOfArrivalHr, string am_pm_de
         if (timeOfDepartureHr < 6)
         {
             cout << "How much did dinner cost on the first day? $";
-            cin >> dnr1;
+            cin >> dnr;
         }
         else
         cout << "Time of departure was too late for any meals on the first day!";
     }
+    mealComp(bfast, lnch, dnr, breakfast_total_allowance, breakfast_total_exceeded, 
+        lunch_total_allowance, lunch_total_exceeded, dinner_total_allowance,
+        dinner_total_exceeded);
+    /***********Days inbetween*******************************************/
+    for(i = 2; i < days; i++)
+    {
+        cout << "On day " << i << endl;
+        cout << "How much did breakfast cost? $";
+        cin >> bfast;
+        cout << "How much did lunch cost? $";
+        cin >> lnch;
+        cout << "How much did dinner cost? $";
+        cin >> dnr;
+
+        mealComp(bfast, lnch, dnr, breakfast_total_allowance, breakfast_total_exceeded, 
+        lunch_total_allowance, lunch_total_exceeded, dinner_total_allowance,
+        dinner_total_exceeded);
+    }
+    
 /******* LAST DAY *****************************************************************************/
     if (am_pm_arrive == "am" || am_pm_arrive == "AM")
     {
-        if (timeOfArrivalHr > 8)
-        {
-        cout << "How much did breakfast cost on the first day? $";
-        cin >> bfast2;
-        cout << "How much did lunch cost on the first day? $";
-        cin >> lnch2;
-        cout << "How much did dinner cost on the first day? $";
-        cin >> dnr2;
-        }
-    }
-    if (am_pm_arrive == "pm" || am_pm_arrive == "PM")
-    {
-        if (timeOfArrivalHr > 1)
-        {
-            cout << "How much did lunch cost on the last day? $";
-            cin >> lnch2;
-            cout << "How much did dinner cost on the first day? $";
-            cin >> dnr2;
-        }
-        else if (timeOfArrivalHr > 7)
+        if (timeOfArrivalHr > 7)
         {
             cout << "How much did dinner cost on the last day? $";
             cin >> dnr2;
         }
+        
+    }
+    if (am_pm_arrive == "pm" || am_pm_arrive == "PM")
+    {
+        if (timeOfArrivalHr < 1)
+        {
+            cout << "How much did dinner cost on the last day? $";
+            cin >> dnr;
+        }
+        else if (timeOfArrivalHr > 0 && timeOfArrivalHr < 7)
+        {
+            cout << "How much did lunch cost on the last day? $";
+            cin >> lnch;
+            cout << "How much did dinner cost on the first day? $";
+            cin >> dnr;
+        }
+        else if (timeOfArrivalHr > 6)
+        {
+            cout << "How much did breakfast cost on the first day? $";
+            cin >> bfast;
+            cout << "How much did lunch cost on the first day? $";
+            cin >> lnch;
+            cout << "How much did dinner cost on the first day? $";
+            cin >> dnr;
+        }
         else
         cout << "Time of arrival was too early for any meals on the last day!";
     }
-    bfast = bfast1 + bfast2;
-    lnch = lnch1 + lnch2;
-    dnr = dnr1 + dnr2;
-/****************************BREAKFAST CALCULATIONS**********************************************/
-    oweb1 = bfast1 - B_ALLOW;
-    if(oweb1 < 0)
-    {
-    oweb1 = 0;
-    cout << "You owe nothing for breakfast on the first day!" << endl;
-    }
-    else
-    {
-    cout << "You owe $" << oweb1 << " for breakfast on the first day!" << endl;
-    }
+    mealComp(bfast, lnch, dnr, breakfast_total_allowance, breakfast_total_exceeded, 
+        lunch_total_allowance, lunch_total_exceeded, dinner_total_allowance,
+        dinner_total_exceeded);
 
-    oweb2 = bfast2 - B_ALLOW;
-    if(oweb2 < 0)
-    {
-    oweb2 = 0;
-    cout << "You owe nothing for breakfast on the last day!" << endl;
-    }
-    else
-    {
-    cout << "You owe $" << oweb2 << " for breakfast on the last day!" << endl;
-    }
-/******************************LUNCH CALCULATIONS ***********************************************/
-    owel1 = lnch1 - L_ALLOW;
-    if(owel1 < 0)
-    {
-    owel1 = 0;
-    cout << "You owe nothing for lunch on the first day!" << endl;
-    }
-    else
-    {
-    cout << "You owe $" << owel1 << " for lunch on the first day!" << endl;
-    }
+    allowanceTotal = breakfast_total_allowance + lunch_total_allowance + dinner_total_allowance;
+    allowanceExceeded = breakfast_total_exceeded + lunch_total_exceeded + dinner_total_exceeded;
+}
 
-    owel2 = lnch2 - L_ALLOW;
-    if(owel2 < 0)
-    {
-    owel2 = 0;
-    cout << "You owe nothing for lunch on the last day!" << endl;
-    }
-    else
-    {
-    cout << "You owe $" << owel2 << " for lunch on the last day!" << endl;
-    }
-/********************************DINNER CALCULATIONS **********************************************/
-    owed1 = dnr1 - D_ALLOW;
-    if(owed1 < 0)
-    {
-    owed1 = 0;
-    cout << "you owe nothing for dinner on the first day!" << endl;
-    }
-    else
-    {
-    cout << "You owe $" << owed1 << " for dinner on the first day!" << endl;
-    }
+/************ Meal Calc ************************************************/
+void mealComp(double bfast, double lnch, double dnr, double& breakfast_total_allowance, 
+        double& breakfast_total_exceeded, double& lunch_total_allowance,
+        double& lunch_total_exceeded, double& dinner_total_allowance,
+        double& dinner_total_exceeded)
+{
+    static const double B_ALLOW = 18;
+    static const double L_ALLOW = 12;
+    static const double D_ALLOW = 20;
 
-    owed2 = dnr2 - D_ALLOW;
-    if(owed2 < 0)
+    if ((bfast - B_ALLOW) > 0)
     {
-    owed2 = 0;
-    cout << "you owe nothing for dinner on the last day!" << endl;
+        breakfast_total_exceeded += (bfast - B_ALLOW);
+        breakfast_total_allowance += B_ALLOW;
     }
-    else
+    else   
+        breakfast_total_allowance += bfast;
+    if ((lnch - L_ALLOW) > 0)
     {
-    cout << "You owe $" << owed2 << " for dinner on the last day!" << endl;
+        breakfast_total_exceeded += (lnch - L_ALLOW); 
+        breakfast_total_allowance += L_ALLOW;
     }
-    
+    else   
+        breakfast_total_allowance += lnch;
+    if ((dnr - D_ALLOW) > 0)
+    {
+        breakfast_total_exceeded += (dnr - D_ALLOW); 
+        breakfast_total_allowance += D_ALLOW;
+    }
+    else   
+        breakfast_total_allowance += dnr;
 }
