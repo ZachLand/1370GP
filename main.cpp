@@ -19,6 +19,8 @@ void mealComp(double, double, double, double&, double&, double&,
 void printResults(int, int, int, string, int, int, string, double, 
         double, int, double, double, double, double, double, double, double, double);
 
+ofstream outFile;
+
 int main () 
 /* These will more than likely be broken up into other Functions
  I've placed them in int main just so we could start building*/
@@ -26,10 +28,10 @@ int main ()
     double inBudget, overBudget;
     // The total number of days spent on the trip.
     // DONE
+    outFile.open("Trip Expenses.txt");
     int days;
     cout << "Days: ";
     days = getValue();
-
     /* The time of departure of the trip and 
         the time of arrival back home of the trip */
     // DONE
@@ -111,6 +113,7 @@ int main ()
         carRental, milesDriven, allowanceVeh, feeParking, feeTaxi, feeConf, feeHotel, 
         feeParkingExcess, allowanceTotal, allowanceExceeded);
 
+    outFile.close();
     return 0;
 }
 /******************************************************************************************/
@@ -199,6 +202,31 @@ void printResults(int days, int DeHr, int DeMin, string DAmPm, int ArHr, int ArM
     cout << "Hotel: $" << h << endl;
     cout << "Total allowance spent = $" << allowanceTotal << endl;
     cout << "Total allowance exceeded = $" << allowanceExceeded << endl;
+    /****************************out file!****************************************/
+    outFile << "days: " << days << endl;
+    outFile << "Time of departure: " << setw(2) << setfill('0') << DeHr 
+            << ':' << setw(2) << setfill('0') << DeMin
+            << ' ' << DAmPm << endl;
+    outFile << "Time of arrival" << setw(2) << setfill('0') << ArHr << ':' 
+            << setw(2) << setfill('0') << ArMin << ' '
+            << ArAmPm << endl;
+    outFile << fixed << showpoint << setprecision(2);
+    outFile << "Airfare = $" << air << endl;
+    outFile << "Car rental = $" << rent << endl;
+    outFile << "Miles driven = " << z << endl;
+    outFile << "Vehicle allowance = $" << av << endl;
+    outFile << "Parking fees = $" << fp << endl;
+    outFile << "Parking allowance = $" << days * 12.00 << endl;
+    outFile << "Was Parking Allowance Exceeded? ";
+    if(fpe<=0)
+        outFile << "No" << endl;
+    else
+        outFile << "Yes\nfeeParkingExcess = $" << fpe << endl;    
+    outFile << "Taxi fees = $" << ft << endl;
+    outFile << "Conference or seminar registration fees = $" << fc << endl;
+    outFile << "Hotel: $" << h << endl;
+    outFile << "Total allowance spent = $" << allowanceTotal << endl;
+    outFile << "Total allowance exceeded = $" << allowanceExceeded << endl;
 }
 /******************************************************************************************/
 void milesDrivenCalc(const double& ALLOWANCE_VEHICLE, int& milesDriven, double& allowanceVeh)
