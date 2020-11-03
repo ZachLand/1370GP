@@ -281,28 +281,28 @@ void meals(int days, int timeOfDepartureHr, int timeOfArrivalHr, string am_pm_de
 /******* LAST DAY *****************************************************************************/
     if (am_pm_arrive == "am" || am_pm_arrive == "AM")
     {
-        if (timeOfArrivalHr > 7)
+        if (timeOfArrivalHr >= 8 && timeOfArrivalHr < 12)
         {
-            cout << "How much did dinner cost on the last day? $";
-            cin >> dnr2;
+            cout << "How much did breakfast cost on the last day? $";
+            cin >> bfast;
         }
         
     }
     if (am_pm_arrive == "pm" || am_pm_arrive == "PM")
     {
-        if (timeOfArrivalHr < 1)
+        if (timeOfArrivalHr == 12)
         {
-            cout << "How much did dinner cost on the last day? $";
-            cin >> dnr;
+            cout << "How much did breakfast cost on the last day? $";
+            cin >> bfast;
         }
-        else if (timeOfArrivalHr > 0 && timeOfArrivalHr < 7)
+        else if (timeOfArrivalHr >= 1 && timeOfArrivalHr < 7)
         {
+            cout << "How much did breakfast cost on the last day? $";
+            cin >> bfast;
             cout << "How much did lunch cost on the last day? $";
             cin >> lnch;
-            cout << "How much did dinner cost on the first day? $";
-            cin >> dnr;
         }
-        else if (timeOfArrivalHr > 6)
+        else if (timeOfArrivalHr >= 7 && timeOfArrivalHr < 12)
         {
             cout << "How much did breakfast cost on the first day? $";
             cin >> bfast;
