@@ -232,7 +232,7 @@ void meals(int days, int timeOfDepartureHr, int timeOfArrivalHr, string am_pm_de
 /******** FIRST DAY ****************************************************************************/
     if (am_pm_depart == "am" || am_pm_depart == "AM")
     {
-        if (timeOfDepartureHr < 7)
+        if (timeOfDepartureHr < 7 || timeOfDepartureHr == 12)
         {
         cout << "How much did breakfast cost on the first day? $";
         cin >> bfast;
@@ -251,7 +251,7 @@ void meals(int days, int timeOfDepartureHr, int timeOfArrivalHr, string am_pm_de
     }
     if (am_pm_depart == "pm" || am_pm_depart == "PM")
     {
-        if (timeOfDepartureHr < 6)
+        if (timeOfDepartureHr < 6 || timeOfDepartureHr == 12)
         {
             cout << "How much did dinner cost on the first day? $";
             cin >> dnr;
