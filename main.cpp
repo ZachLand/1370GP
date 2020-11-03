@@ -24,7 +24,7 @@ int main ()
     // The total number of days spent on the trip.
     // DONE
     int days;
-    cout << "days: ";
+    cout << "Days: ";
     days = getValue();
 
     /* The time of departure of the trip and 
@@ -41,12 +41,12 @@ int main ()
     // The amount of any round -trip airfare
     // DONE
     double airfare;
-    cout << "airfare: $";
+    cout << "Airfare: $";
     airfare = getValue();
 
     // The amount of any car rentals
     double carRental;
-    cout << "carRental: $";
+    cout << "Car rental cost: $";
     carRental = getValue();
 
     /* Miles driven, if a private vehicle was used. Vehicle allowance 
@@ -77,7 +77,7 @@ int main ()
 
     // Conference or seminar registration fees
     double feeConf;
-    cout << "feeConf: $";
+    cout << "Conference or seminar registration fees: $";
     feeConf = getValue();
 
     /* Hotel expenses. (The company allows up to $90 per night for
@@ -173,29 +173,29 @@ void printResults(int days, int DeHr, int DeMin, string DAmPm, int ArHr, int ArM
         be a test for our outputs while troubleshooting.*/ 
     cout << endl;
     cout << "days: " << days << endl;
-    cout << setw(2) << setfill('0') << DeHr 
+    cout << "Time of departure: " << setw(2) << setfill('0') << DeHr 
             << ':' << setw(2) << setfill('0') << DeMin
             << ' ' << DAmPm << endl;
-    cout << setw(2) << setfill('0') << ArHr << ':' 
+    cout << "Time of arrival" << setw(2) << setfill('0') << ArHr << ':' 
             << setw(2) << setfill('0') << ArMin << ' '
             << ArAmPm << endl;
     cout << fixed << showpoint << setprecision(2);
-    cout << "airfair = $" << air << endl;
-    cout << "carRental = $" << rent << endl;
-    cout << "milesDriven = " << z << endl;
-    cout << "allowanceVeh = $" << av << endl;
-    cout << "feeParking = $" << fp << endl;
+    cout << "Airfare = $" << air << endl;
+    cout << "Car rental = $" << rent << endl;
+    cout << "Miles driven = " << z << endl;
+    cout << "Vehicle allowance = $" << av << endl;
+    cout << "Parking fees = $" << fp << endl;
     cout << "Parking allowance = $" << days * 12.00 << endl;
     cout << "Was Parking Allowance Exceeded? ";
     if(fpe<=0)
         cout << "No" << endl;
     else
         cout << "Yes\nfeeParkingExcess = $" << fpe << endl;    
-    cout << "feeTaxi = $" << ft << endl;
-    cout << "feeConf = $" << fc << endl;
-    cout << "hotel: $" << h << endl;
-    cout << "allowancetotal = $" << allowanceTotal << endl;
-    cout << "allowanceExceeded = $" << allowanceExceeded << endl;
+    cout << "Taxi fees = $" << ft << endl;
+    cout << "Conference or seminar registration fees = $" << fc << endl;
+    cout << "Hotel: $" << h << endl;
+    cout << "Total allowance spent = $" << allowanceTotal << endl;
+    cout << "Total allowance exceeded = $" << allowanceExceeded << endl;
 }
 /******************************************************************************************/
 void milesDrivenCalc(const double& ALLOWANCE_VEHICLE, int& milesDriven, double& allowanceVeh)
