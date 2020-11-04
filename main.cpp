@@ -24,15 +24,15 @@ ofstream outFile;
 
 
 int main () 
-/* These will more than likely be broken up into other Functions
- I've placed them in int main just so we could start building*/
 {
-    double inBudget, overBudget;
     // The total number of days spent on the trip.
-    // DONE
+    // Open output file.
     outFile.open("Trip Expenses.txt");
+
+    // Declare Variable
     int days;
     cout << "Days: ";
+    // Check if days is 1 or more.
     do
     {
         days = getValue();
@@ -43,17 +43,17 @@ int main ()
     
     /* The time of departure of the trip and 
         the time of arrival back home of the trip */
-    // DONE
+    // Declare vairables
     int timeOfDepartureHr, timeOfDepartureMin, timeOfArrivalHr, timeOfArrivalMin;
     string am_pm_depart, am_pm_arrive;
 
-    cout << "Please enter your departure time (HH:MM AM/PM): ";
+    // Get inputs from keyboard for time
+    cout << "Please enter your departure time on first day (HH:MM AM/PM): ";
     getTime(timeOfDepartureHr, timeOfDepartureMin, am_pm_depart);
-    cout << "Please enter your arrival time (HH:MM AM/PM): ";
+    cout << "Please enter your arrival time on last day (HH:MM AM/PM): ";
     getTime(timeOfArrivalHr, timeOfArrivalMin, am_pm_arrive);
 
     // The amount of any round -trip airfare
-    // DONE
     double airfare;
     cout << "Airfare: $";
     airfare = getValue();
@@ -65,7 +65,6 @@ int main ()
 
     /* Miles driven, if a private vehicle was used. Vehicle allowance 
         is $0.58 per mile. */
-    // DONE
     double allowanceVeh = 0;
     int milesDriven = 0;
     string privateVeh;
