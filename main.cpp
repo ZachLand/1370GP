@@ -12,8 +12,6 @@ void milesDrivenCalc(const double&, int&, double&, string&);
 void getFees(const double&, double&, double&, int);
 void meals(int, int, int, string, string, double&, double&);
 void feeLoop(int, const double, double&, double&, int&);
-void hotelFeeLoop(int, const double, double&, double&);
-void parkingFeeLoop(int, const double, double&, double&);
 void mealComp(double, double, double, double&, double&, double&,
         double&, double&, double& );
 void printResult(int, int, int, string, int, int, string, double, 
@@ -54,17 +52,20 @@ int main ()
     getTime(timeOfArrivalHr, timeOfArrivalMin, am_pm_arrive);
 
     // The amount of any round -trip airfare
+    // Declare Variable
     double airfare;
     cout << "Airfare: $";
     airfare = getValue();
 
     // The amount of any car rentals
+    // Declare Variable
     double carRental;
     cout << "Car rental cost: $";
     carRental = getValue();
 
     /* Miles driven, if a private vehicle was used. Vehicle allowance 
         is $0.58 per mile. */
+    // Declare Variable
     double allowanceVeh = 0;
     int milesDriven = 0;
     string privateVeh;
@@ -73,7 +74,7 @@ int main ()
 
     /* Parking fees. (The company allows up to $12 per day. Anything
         in excess of this must be paid by the employee.)*/
-    // DONE
+    // Declare Variable
     int parkingDays;
     double parkingAllowTot, parkingAllowExceed = 0;
     const double ALLOWANCE_PARKING = 12.00;
@@ -82,6 +83,7 @@ int main ()
 
     /* Taxi fees. (The company allows up to $40 per day for each day
         a taxi was used. Anything in excess of this must be paid by the employee.)*/
+    // Declare Variable
     int taxiDays;
     double taxiAllowExceed = 0, taxiAllowTot;
     const double ALLOWANCE_TAXI = 40.00;
@@ -89,16 +91,17 @@ int main ()
     feeLoop(days, ALLOWANCE_TAXI, taxiAllowExceed, taxiAllowTot, taxiDays);
 
     // Conference or seminar registration fees
+    // Declare Variable
     double feeConf;
     cout << "\nConference or seminar registration fees: $";
     feeConf = getValue();
 
     /* Hotel expenses. (The company allows up to $90 per night for
         lodging. Anything in excess of this amount must be paid by the employee.)*/
+    // Declare Variable
     double hotelAllowExceed = 0, hotelAllowTot;
     const double ALLOWANCE_HOTEL = 90.00;
     int hotelDays;
-    //getFees(ALLOWANCE_HOTEL, hotelAllowTot, hotelAllowExceed, days);
     cout << "\nHow much were the hotel fees? " << endl;
     feeLoop(days, ALLOWANCE_HOTEL, hotelAllowExceed, hotelAllowTot, hotelDays);
 
@@ -113,6 +116,7 @@ int main ()
         allowable meals. (The company allows up to $18 for breakfast,
         $12 for lunch, and $20 for dinner. Anything in excess of this
         must be paid by the employee.)*/
+    // Declare Variable
     double allowanceTotal, allowanceExceeded = 0;
     cout << "\n***Meals on Trip***" << endl;
     meals(days, timeOfDepartureHr, timeOfArrivalHr, am_pm_depart, am_pm_arrive, 
