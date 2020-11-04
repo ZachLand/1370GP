@@ -221,7 +221,7 @@ void printResult(int days, int timeOfDeparHr, int timeOfDepartMin, string am_pm_
     cout << "Taxi Fees ($40/day)" << setw(28) << taxiDays << " days\t" << setw(7) << "$" << taxiAllow << "\t" << setw(11) << "$" << taxiExceed << endl;
     cout << "Conference/Seminar Registration Fees: " << setw(25) << "$" << confFees << endl;
     cout << "Hotel Fees ($90/night)" << setw(25) << hotelDays << " nights\t" << setw(7) << "$" << hotelAllow << "\t" << setw(11) << "$" << hotelExceed << endl;
-    cout << "Meals" << setw(58) << "$" << mealsAllow << "\t" << setw(11) << "$" << mealsExceed << endl;
+    cout << "Meals ($18/Breakfast, $12/Lunch, $20/Dinner)" << setw(19) << "$" << mealsAllow << "\t" << setw(11) << "$" << mealsExceed << endl;
     cout << "---------------------------------------" << setw(31) << "---------" << setw(20) << "----------" << endl;
     cout << "Total" << setw(58) << "$" << totalAllow << "\t" << setw(11) << "$" << totalExceed << endl;
 
@@ -248,7 +248,7 @@ void printResult(int days, int timeOfDeparHr, int timeOfDepartMin, string am_pm_
     outFile << "Taxi Fees ($40/day)" << setw(28) << taxiDays << " days\t" << setw(7) << "$" << taxiAllow << "\t" << setw(11) << "$" << taxiExceed << endl;
     outFile << "Conference/Seminar Registration Fees: " << setw(25) << "$" << confFees << endl;
     outFile << "Hotel Fees ($90/night)" << setw(25) << hotelDays << " nights\t" << setw(7) << "$" << hotelAllow << "\t" << setw(11) << "$" << hotelExceed << endl;
-    outFile << "Meals" << setw(58) << "$" << mealsAllow << "\t" << setw(11) << "$" << mealsExceed << endl;
+    outFile << "Meals ($18/Breakfast, $12/Lunch, $20/Dinner)" << setw(19) << "$" << mealsAllow << "\t" << setw(11) << "$" << mealsExceed << endl;
     outFile << "---------------------------------------" << setw(31) << "---------" << setw(20) << "----------" << endl;
     outFile << "Total" << setw(58) << "$" << totalAllow << "\t" << setw(11) << "$" << totalExceed << endl;
 
